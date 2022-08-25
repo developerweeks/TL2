@@ -36,7 +36,13 @@ var anchors = [
 console.log('scale ' + scale);
 console.log('ratio ' + ratio);
 // Initialize village and menus
+$('.hex').each(function( index ) {
+    console.log($(this).attr('data-x') + ' - ' + $(this).attr('data-y'));
+});
 conformity();
+$('.hex').each(function( index ) {
+    console.log($(this).attr('data-x') + ' - ' + $(this).attr('data-y'));
+});
 
 function scan(){
    // in case some things have changed, reset the globals
@@ -52,12 +58,12 @@ function scan(){
 // convert data-x to pixel offsets and place everything
 function repaint(){
    $('.hex').each(function( index ) {
-     $(this).height(gridHeight / 2);
-     $(this).width(gridWidth - 10);
      var oddRow = ($(this).attr('data-y') % 2 == 1) ? 0 : 0.5;
      var dx = ($(this).attr('data-x') + oddRow) ;
      var dy = ($(this).attr('data-y')) * gridHeight * 0.77;
      $(this).offset({top:dy,left:dx});
+     $(this).height(gridHeight / 2);
+     $(this).width(gridWidth - 10);
      console.log(dx + '.' + dy);
  });
 };
@@ -117,25 +123,23 @@ $('#save').on('click', function() {
 
 function snappy( event, ui ) {
     // Find where we are.
-    var rawX = $(this).offset().left;
-    var rawY = $(this).offset().top;
+    var nY = Math.round( $(this).offset().top / gridHeight);
+    var oddRow = (nY % 2 == 1) ? 0 : 0.5;
+    var nX = Math.round( $(this).offset().left / gridWidth - oddRow);
     // Check if row offset is needed.
-    var oddRow = (Math.round(rawY / gridHeight) % 2 == 1) ? 0 : 0.5;
     console.log(oddRow)
     // Now find the closest anchor and put it there.
-    if ($.isNumeric(anchors[Math.round(rawY / gridHeight)][Math.round(rawX / gridWidth - oddRow)].h)) {
+    if ($.isNumeric(anchors[nY][nX].h)) {
         // Clear old anchor point.
         anchors[$(this).attr('data-y')][$(this).attr('data-x')].h = 0;
         console.log('Drop anchor.');
         // Set here as new home.
-        anchors[Math.round(rawY / gridHeight)][Math.round(rawX / gridWidth - oddRow)].h = $(this);
-        $(this).text(Math.round(rawX / gridWidth) + '.' + Math.round(rawY / gridHeight));
+        anchors[nY][nX].h = $(this);
+        $(this).text(nX + '.' + nY);
 
-        var newX = Math.round(rawX / gridWidth - oddRow);
-        var newY = Math.round(rawY / gridHeight);
         // Nothing in the way, set these coordinates
-        $(this).attr('data-x', newX);
-        $(this).attr('data-y', newY);
+        $(this).attr('data-x', nX);
+        $(this).attr('data-y', nY);
     } else {
         // show me the collision
         console.log("Collision!");
