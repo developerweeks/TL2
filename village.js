@@ -156,7 +156,7 @@ function snappy( event, ui ) {
    // This is the point where it stopped.
    // Now find the closest anchor and put it there.
    var newX = 0;
-   var newY = Math.round(rawY / gridHeight) * gridHeight;
+   var newY = Math.round(rawY / gridHeight) * (gridHeight - 50);
    if (Math.round(rawY / gridHeight) % 2 == 1) {
    	// An odd row, keep X straight.
    	newX = Math.round(rawX / gridWidth) * gridWidth;
@@ -205,11 +205,9 @@ function conformity(){
   scan(); 
   repaint();
   census();
-  $('#map').draggable({ addClasses: false });
   $('.hex').draggable({ addClasses: false });
   $('.hex').on( "dragstop", snappy);
   $('.pasture').on('click', pastureasource);
-   $('#map').on( "dragstop", recenter);
    // is this compounding the listeners?
    // how to only attach the listener to the new hex?
 };

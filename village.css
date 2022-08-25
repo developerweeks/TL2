@@ -3,6 +3,12 @@ body {
   font-family: Signika Negative, Asap, sans-serif;
 }
 
+.boundary {
+  margin: 40px;
+  display: block;
+  z-index: 1;
+}
+
 #map {
   overflow:visible; 
   padding:0; 
@@ -47,14 +53,14 @@ body {
 }
 
 .hex:after {
-    content: "";
-    width: 0; 
-    position: absolute;
-    bottom: -50px;
+  content: "";
+  width: 0; 
+  position: absolute;
+  bottom: -50px;
   left: 0px;
-    border-top: 50px solid #272727;
-    border-left: 100px solid transparent;
-    border-right: 100px solid transparent;
+  border-top: 50px solid #272727;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
 }
 
 .hex.pasture {  background-color: #92b559;}
@@ -82,52 +88,38 @@ body {
 .hex.hemp:after {  border-top: 50px solid #cabd4b;}
 
 #controls {
-  background-color: #222;
-  border: 1px solid #555;
-  color: #bbb;
-  font-size: 26px;
-  margin: 20px 0;
-  position: fixed;
-  bottom: 20px;
-  left: 40px;
+ display: block;
+ background-color: (rgba(255,255,255,.6));
+ border-radius: 10px;
+ border: 3px solid #FFFFFF;
+ position: fixed;
+ top: 10px;
+ right: 10px;
+ vertical-align:middle;
+ cursor: pointer;
+ font-size: 35px;
 }
-#controls ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+#controls a {
+  font-size: 35px;
+  color: #FFFFFF;
 }
-#controls li {
-  display: inline-block;
-  padding: 8px 0 8px 10px;
-  margin:0;
-}
-#controls input {
-  vertical-align:middle;
-  cursor: pointer;
-}
-#controls .controlsTitle {
-  border-right:1px solid #555; 
-  border-bottom:none; 
-  padding-right:10px;
-}
-
 
 #legend {
-   display: block;
-   background-color: (rgba(255,255,255,.6));
-   border-radius: 10px;
-   border: 3px solid #FFFFFF;
-   position: absolute;
-   left: 0;
-   top: 0;
-   z-index: 100;
+ display: block;
+ background-color: (rgba(255,255,255,.6));
+ border-radius: 10px;
+ border: 3px solid #FFFFFF;
+ position: absolute;
+ left: 10px;
+ top: 10px;
+ z-index: 100;
 }
 #legend a {
-      font-size: 35px;
+  font-size: 35px;
 }
 #legend a span {
-         font-size: 20px;
-         color: #FFFFFF;
+ font-size: 20px;
+ color: #FFFFFF;
 }
 #legend a.wood { color: #037a46; }
 #legend a.tar { color: #281a0e; }
