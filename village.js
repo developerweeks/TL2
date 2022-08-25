@@ -58,13 +58,15 @@ function scan(){
 // convert data-x to pixel offsets and place everything
 function repaint(){
    $('.hex').each(function( index ) {
-     var oddRow = ($(this).attr('data-y') % 2 == 1) ? 0 : 0.5;
-     var dx = ($(this).attr('data-x') + oddRow) ;
-     var dy = ($(this).attr('data-y')) * gridHeight * 0.77;
-     $(this).offset({top:dy,left:dx});
+    var g = $(this).attr('data-x');
+    var h = $(this).attr('data-y');
+    console.log(g + '.' + h);
+     var oddRow = (h % 2 == 1) ? 0 : 0.5;
+     // Having (g + oddRow) * gridWidth would concat the first two number before multiply.
+     $(this).offset({top: (h * gridHeight * 0.77),left: g * gridWidth + ( gridWidth * oddRow ) });
      $(this).height(gridHeight / 2);
      $(this).width(gridWidth - 10);
-     console.log(dx + '.' + dy);
+     console.log( $(this).offset() );
  });
 };
 
