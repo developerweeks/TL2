@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Village local attempt</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link type="text/css" rel="stylesheet" href='village.css' media="all" />
+    <script>
+      window.console = window.console || function(t) {};
+  </script>
+  <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+    }
+</script>
+</head>
+<body translate="no">
+    <div id="legend">
+        <a class="pasture">&#x2B23;<span class="count"></span></a>
+        <a class="wood">&#x2B23;<span class="count"></span></a>
+        <a class="iron">&#x2B23;<span class="count"></span></a>
+        <a class="stone">&#x2B23;<span class="count"></span></a>
+        <a class="tar">&#x2B23;<span class="count"></span></a>
+        <a class="hemp">&#x2B23;<span class="count"></span></a>
+    </div>
+    <div id="controls">
+        <a href="#" id="reset">&#x1d11d;</a>
+        <a href="#" id="sort">&#x2B17;</a>
+        <a href="#" id="save">&#x2B13;</a>
+    </div>
+    <div id="encounter"><div id="selected" class="menu"></div></div>
+    <div id="map" class="ui-draggable-handle">
+        <div class="hex iron" ></div>
+        <div class="hex stone" ></div>
+        <div class="hex pasture" ></div>
+        <div class="hex wood" ></div>
+        <div class="hex iron" ></div>
+        <div class="hex tar" ></div>
+        <div class="hex hemp" ></div>
+        <div class="hex wood" ></div>
+        <div class="hex pasture" ></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="village.js"></script>
+</body></html>

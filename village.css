@@ -1,0 +1,137 @@
+body {
+  background-color:black;
+  font-family: Signika Negative, Asap, sans-serif;
+}
+
+#map {
+  overflow:visible; 
+  padding:0; 
+  position: relative;
+  margin: 40px;
+  top: 0px;
+  left: 0px;
+}
+
+.hex:before {
+  content: " ";
+  width: 0; 
+  height: 0;
+  border-bottom: 50px solid #272727;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  position: absolute;
+  top: -50px;
+  left: 0;
+}
+
+.hex {
+  margin-top: 0px;
+  width: 200px;
+  background-color: #272727;
+  position: absolute;
+  text-align: center;
+  color: white;
+  white-space: normal;
+  overflow: visible;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: .7;
+}
+
+.hex P {
+  margin: 0; 
+  padding: 0; 
+  position: relative; 
+  top: -50px;
+}
+
+.hex:after {
+    content: "";
+    width: 0; 
+    position: absolute;
+    bottom: -50px;
+  left: 0px;
+    border-top: 50px solid #272727;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+}
+
+.hex.pasture {  background-color: #92b559;}
+.hex.pasture:before {  border-bottom: 50px solid #92b559;}
+.hex.pasture:after {  border-top: 50px solid #92b559;}
+
+.hex.wood {  background-color: #037a46;}
+.hex.wood:before {  border-bottom: 50px solid #037a46;}
+.hex.wood:after {  border-top: 50px solid #037a46;}
+
+.hex.tar {  background-color: #281a0e;}
+.hex.tar:before {  border-bottom: 50px solid #281a0e;}
+.hex.tar:after {  border-top: 50px solid #281a0e;}
+
+.hex.stone {  background-color: #606060;}
+.hex.stone:before {  border-bottom: 50px solid #606060;}
+.hex.stone:after {  border-top: 50px solid #606060;}
+
+.hex.iron {  background-color: #b78d7e;}
+.hex.iron:before {  border-bottom: 50px solid #b78d7e;}
+.hex.iron:after {  border-top: 50px solid #b78d7e;}
+
+.hex.hemp {  background-color: #cabd4b;}
+.hex.hemp:before {  border-bottom: 50px solid #cabd4b;}
+.hex.hemp:after {  border-top: 50px solid #cabd4b;}
+
+#controls {
+  background-color: #222;
+  border: 1px solid #555;
+  color: #bbb;
+  font-size: 26px;
+  margin: 20px 0;
+  position: fixed;
+  bottom: 20px;
+  left: 40px;
+}
+#controls ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+#controls li {
+  display: inline-block;
+  padding: 8px 0 8px 10px;
+  margin:0;
+}
+#controls input {
+  vertical-align:middle;
+  cursor: pointer;
+}
+#controls .controlsTitle {
+  border-right:1px solid #555; 
+  border-bottom:none; 
+  padding-right:10px;
+}
+
+
+#legend {
+   display: block;
+   background-color: (rgba(255,255,255,.6));
+   border-radius: 10px;
+   border: 3px solid #FFFFFF;
+   position: absolute;
+   left: 0;
+   top: 0;
+   z-index: 100;
+}
+#legend a {
+      font-size: 35px;
+}
+#legend a span {
+         font-size: 20px;
+         color: #FFFFFF;
+}
+#legend a.wood { color: #037a46; }
+#legend a.tar { color: #281a0e; }
+#legend a.stone { color: #606060; }
+#legend a.pasture { color: #92b559; }
+#legend a.iron { color: #b78d7e; }
+#legend a.hemp { color: #cabd4b; }
