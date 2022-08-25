@@ -53,7 +53,8 @@ function recenter( event, ui ) {
 }
 
 // the button functions
-$('#reset').on('click', function() {
+$('#reset').on('click', function(e) {
+   e.preventDefault();
 	console.log('Reset!');
    scan();
   // reset the village layout
@@ -67,7 +68,8 @@ $('#reset').on('click', function() {
   repaint();
 });
 
-$('#sort').on('click', function() {
+$('#sort').on('click', function(e) {
+   e.preventDefault();
 	console.log("sort!");
   // reorder village layout
   // one row per hex type 
@@ -91,7 +93,8 @@ $('#sort').on('click', function() {
   });
   repaint();
 });
-$('#save').on('click', function() {
+$('#save').on('click', function(e) {
+   e.preventDefault();
    console.log('repaint the village');
    repaint();
 });
@@ -134,48 +137,50 @@ function pastureasource() {
 // convert data-x to pixel offsets and place everything
 function repaint(){
   $('.hex').each(function( index ) {
-  	$(this).height(gridHeight / 2);
-  	$(this).width(gridWidth - 10);
-  	x = $(this).attr('data-x');
-    y = $(this).attr('data-y');
-    $(this).offset({top:y,left:x});
+  	var dx = $(this).attr('data-x');
+   var dy = $(this).attr('data-y');
+   var oddRow = (dy % 2 == 1) ? 0 : 0.5;
+   // It looks silly, but the 1* at the start forces this to be a number.
+   $(this).offset({top:1 * dy * gridHeight * 0.77, left:1 * gridWidth * dx + 1 * gridWidth * oddRow});
+   $(this).text(dx +' - ' + dy);
+   $(this).height(gridHeight / 2);
+   $(this).width(gridWidth - 10);
   });
 };
 
 function census(){
   $('#legend a').each(function( index ) {
     type = $(this).attr('class');
-    count = $('.hex .'+type).length;
+    count = $('.hex.'+type).length;
     $(this).find('span').text(count);
   });
 };
 
 function snappy( event, ui ) {
-   var rawX = $(this).offset().left;
-   var rawY = $(this).offset().top;
-   // This is the point where it stopped.
-   // Now find the closest anchor and put it there.
-   var newX = 0;
-   var newY = Math.round(rawY / gridHeight) * (gridHeight - 50);
-   if (Math.round(rawY / gridHeight) % 2 == 1) {
-   	// An odd row, keep X straight.
-   	newX = Math.round(rawX / gridWidth) * gridWidth;
-   } else {
-   	// An even row, rounding would lose the .5 we want to keep.
-   	var step = rawX / gridWidth - 0.5;
-   	newX = (Math.round(step) + 0.5) * gridWidth;
-   }
+   // Find where we are.
+   var nY = Math.round( $(this).offset().top / (0.77 * gridHeight) );
+   var oddRow = (nY % 2 == 1) ? 0 : 0.5;
+   var nX = Math.round( 1 * $(this).offset().left / gridWidth - oddRow);
 
-   console.log(rawX +', '+ rawY +' is changed to '+ newX +','+ newY);
+   console.log('mouse ' + currentMousePos.x + ' - ' + currentMousePos.y);
+   console.log(nX + ' - ' + nY);
    // collision test
-   if( $(".hex[data-x='"+ newX+"'][data-y='"+ newY+"']").length == 0) {
+   if( $(".hex[data-x='"+ nX+"'][data-y='"+ nY+"']").length == 0) {
       // nothing in the way, set these coordinates
-     $(this).attr('data-x', newX);
-     $(this).attr('data-y', newY);
+     $(this).attr('data-x', nX);
+     $(this).attr('data-y', nY);
+     console.log('Landed.');
    } else {
-      // show me the collision
-      console.log("Collision!");
-      console.log($(".hex[data-x='"+ newX+"'][data-y='"+ newY+"']"));
+      if( $(this).is($(".hex[data-x='"+ nX+"'][data-y='"+ nY+"']")) ) {
+         // Colliding with self, move it.
+        $(this).attr('data-x', nX);
+        $(this).attr('data-y', nY);
+        console.log('Tripped on self.');
+      } else {
+         // show me the collision
+         console.log("Collision!");
+         console.log($(".hex[data-x='"+ nX+"'][data-y='"+ nY+"']"));
+      }
    }
    // Merely a straightening is needed
    repaint();

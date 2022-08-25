@@ -36,6 +36,7 @@ body {
   background-color: #272727;
   position: absolute;
   text-align: center;
+  vertical-align:middle;
   color: white;
   white-space: normal;
   overflow: visible;

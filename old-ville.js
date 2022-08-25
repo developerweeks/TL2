@@ -40,7 +40,7 @@ $(document).mousemove(function(event) {
 fixate();
 conformity();
 
-
+// https://www.youtube.com/watch?v=KQ9st3LRjwo ajax and php raw, for interaction with drupal.
 // https://stackoverflow.com/questions/23362138/jquery-find-coordinates-closest-to-my-current-location-from-array-retrieve-el
 
 
@@ -88,6 +88,7 @@ function repaint(){
   	x = $(this).attr('data-x');
     y = $(this).attr('data-y');
     $(this).offset({top:y,left:x});
+    $(this).text(x +' - ' + y);
   });
 };
 
