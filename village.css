@@ -18,6 +18,7 @@ body {
   position: relative;
   top: 0px;
   left: 0px;
+  z-index: 25;
 }
 
 #map {
@@ -56,13 +57,6 @@ body {
   opacity: .7;
 }
 
-.hex P {
-  margin: 0; 
-  padding: 0; 
-  position: relative; 
-  top: -50px;
-}
-
 .hex:after {
   content: "";
   width: 0; 
@@ -97,6 +91,10 @@ body {
 .hex.hemp {  background-color: #cabd4b;}
 .hex.hemp:before {  border-bottom: 50px solid #cabd4b;}
 .hex.hemp:after {  border-top: 50px solid #cabd4b;}
+
+.unit {
+  position: absolute;
+}
 
 #controls {
  display: block;

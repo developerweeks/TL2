@@ -3,8 +3,11 @@
  */
 var guyImgs = {
 	1: './img/KnifeGuy.gif',
-	2: './img/Clubber.gif'
+	2: './img/Clubber.gif',
+	3: './img/Pom-Pom.png'
 };
+
+var spawns = $('#spawns');
 
 // utility functions
 
@@ -18,14 +21,15 @@ function synergize(one,two, three) {
 	// Add the unit.
 }
 
-function addUnit(type = 1, home = 0) {
+function addUnit(type = 1, home = {x:0.5, y:0.5}) {
   target = document.createElement("img");
   target.id = generateUUID();
   console.log(target.id);
-  target.className += 'target ';
+  target.className += 'target unit ';
   target.className += 'unit-type-'+ type;
-  target.src = "http://files.softicons.com/download/tv-movie-icons/homestar-runner-icons-by-rich-d/png/128/Pom-Pom.png";
-  container.appendChild(target);
+  target.src = guyImgs[ type ];
+  spawns.append(target);
+  $('#'+ target.id).offset({top:0.77 * gridHeight * home.y, left:1 * gridWidth * home.x});
 }
 
 function generateUUID() { // Public Domain/MIT
