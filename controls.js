@@ -51,3 +51,9 @@ $('#save').on('click', function(e) {
    console.log('repaint the village');
    repaint();
 });
+
+$('#spawn').on('click', function(e){
+   e.preventDefault();
+   console.log('make the units');
+
+});

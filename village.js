@@ -44,10 +44,6 @@ function scan(){
 }
 
 
-function synergize(one, two, three) {
-   // body...
-}
-
 // convert data-x to pixel offsets and place everything
 function repaint(){
   $('.hex').each(function( index ) {
@@ -145,11 +141,9 @@ function pastureasource() {
 
 function annex(type, x, y) {
   // Append a DOM element object
-  var newFill = document.createElement( 'div' );
-  $(newFill).addClass(type);
-  var newHex = document.createElement( 'a' );
+  var newHex = document.createElement( 'div' );
   $(newHex).addClass('hex').attr('data-x', x).attr('data-y', y);
-  $(newHex).append( newFill );
+  $(newHex).addClass(type);
   $('#map').append( newHex );
    
    conformity();
@@ -225,26 +219,4 @@ function animateUnits() {
 
 // .onfinish = function() {
 //		setTimeout(animateUnits, Math.floor(2000))
-
-function addUnit(type = 1, home = 0) {
-  target = document.createElement("img");
-  target.id = generateUUID();
-  console.log(target.id);
-  target.className += 'target ';
-  target.className += 'unit-type-'+ type;
-  target.src = "http://files.softicons.com/download/tv-movie-icons/homestar-runner-icons-by-rich-d/png/128/Pom-Pom.png";
-  container.appendChild(target);
-}
-
-function generateUUID() { // Public Domain/MIT
-  var d = new Date().getTime();
-  if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
-    d += performance.now(); //use high-precision timer if available
-  }
-  return 'unit-xxyxxyxx'.replace(/[xy]/g, function (c) {
-    var r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-  });
-}
 

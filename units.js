@@ -48,3 +48,6 @@ function generateUUID() { // Public Domain/MIT
 
 // listeners
 
+// ToDo: make a unit that is controllable by the user 
+// this special unit is the one that steals the hexagon
+// while the rest of the units are fighting.
