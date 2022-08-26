@@ -78,7 +78,15 @@ function concoct(mix) {
   // This sort does nothing?  I see both of these.
   // ["iron","stone","iron"]
   // ["stone","iron","iron"]
-  //console.log(mix);
+  var counts = {};
+  $.each(mix, function(key,value) {
+    if (!counts.hasOwnProperty(value)) {
+      counts[value] = 1;
+    } else {
+      counts[value]++;
+    }
+  });
+
   // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
   // A total of 56 possible combinations
   // Returned type number controls the image used, etc.
