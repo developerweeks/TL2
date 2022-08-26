@@ -4,12 +4,16 @@ body {
 }
 
 .boundary {
-  margin: 0px;
-  position: absolute;
-  top: 40px;
-  left: 40px;
   display: block;
-  z-index: 1;
+  width: 620px;
+  margin: 20px auto;
+}
+
+#Roster li span {
+  display: inline-block;
+}
+#Roster li img {
+  display: inline-block;
 }
 
 .cost {

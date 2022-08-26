@@ -7,6 +7,8 @@ var guyImgs = {
 	3: './img/Pom-Pom.png'
 };
 
+// https://opengameart.org/content/mr-knife-guy-animated
+
 var spawns = $('#spawns');
 var army = {};
 
