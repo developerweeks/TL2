@@ -8,6 +8,8 @@ var guyImgs = {
 };
 
 // https://opengameart.org/content/mr-knife-guy-animated
+// https://codepen.io/punkydrewster713/pen/YooJJj
+// https://codepen.io/camkida/details/LjvjwR
 
 var spawns = $('#spawns');
 var army = {};
