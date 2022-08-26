@@ -1,0 +1,29 @@
+body {
+  background-color: grey;
+  font-family: Signika Negative, Asap, sans-serif;
+}
+
+.boundary {
+  margin: 0px;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  display: block;
+  z-index: 1;
+}
+
+.cost {
+ display: inline-block;
+ background-color: (rgba(255,255,255,.6));
+ border-radius: 10px;
+ border: 2px solid #FFFFFF;
+}
+.cost a {
+  font-size: 35px;
+}
+.cost a.wood { color: #037a46; }
+.cost a.tar { color: #281a0e; }
+.cost a.stone { color: #606060; }
+.cost a.pasture { color: #92b559; }
+.cost a.iron { color: #b78d7e; }
+.cost a.hemp { color: #cabd4b; }

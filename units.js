@@ -77,6 +77,24 @@ function concoct(mix) {
   return 1;
 }
 
+// Call up the whole army.
+function conscript() {
+  // The empty() method removes all child nodes and content from the selected elements.
+  $('#spawns').empty();
+  // Clear our dupe filter too.
+  army = {};
+  // It would be more efficient 
+  var sites = [];
+  console.log('make the units');
+  $('.hex').each(function( index ) {
+    var options = findTriplets($(this));
+    $(options).each(function(index) {
+      //console.log($(this));
+      synergize($(this)[0],$(this)[1],$(this)[2],);
+    });
+  });
+}
+
 function findTriplets(center) {
   var trips = [];
   var dx = parseInt(center.attr('data-x'));
