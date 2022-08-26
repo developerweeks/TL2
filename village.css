@@ -4,16 +4,26 @@ body {
 }
 
 .boundary {
-  margin: 40px;
+  margin: 0px;
+  position: absolute;
+  top: 40px;
+  left: 40px;
   display: block;
   z-index: 1;
+}
+
+#spawns {
+  overflow:visible; 
+  padding:0; 
+  position: relative;
+  top: 0px;
+  left: 0px;
 }
 
 #map {
   overflow:visible; 
   padding:0; 
   position: relative;
-  margin: 40px;
   top: 0px;
   left: 0px;
 }

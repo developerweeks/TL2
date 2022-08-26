@@ -44,89 +44,9 @@ function scan(){
 }
 
 
-/*
- * Interactive controls.
- */
-$('#reset').on('click', function(e) {
-   e.preventDefault();
-   scan();
-   console.log('Reset!');
-   console.log(limit + ' to a row');
-  // reset the village layout
-  $('.hex').each(function( index ) {
-     var step = index % limit;
-     var row = Math.floor( index / limit );
-     $(this).attr('data-x', step);
-     $(this).attr('data-y', row);
-  });
-  repaint();
-});
-
-$('#sort').on('click', function(e) {
-   e.preventDefault();
-	console.log("sort!");
-  // reorder village layout
-  // one row per hex type 
-  $('.hex.pasture').each(function( index ) {
-     $(this).attr('data-x', index*gridWidth).attr('data-y', 0);
-  });
-  $('.hex.wood').each(function( index ) {
-     $(this).attr('data-x', (index + 0.5) * gridWidth).attr('data-y', gridHeight);
-  });
-  $('.hex.iron').each(function( index ) {
-     $(this).attr('data-x', index*gridWidth).attr('data-y', 2*gridHeight);
-  });
-  $('.hex.stone').each(function( index ) {
-     $(this).attr('data-x', (index + 0.5) * gridWidth).attr('data-y', 3*gridHeight);
-  });
-  $('.hex.tar').each(function( index ) {
-     $(this).attr('data-x', index*gridWidth).attr('data-y', 4*gridHeight);
-  });
-  $('.hex.hemp').each(function( index ) {
-     $(this).attr('data-x', (index + 0.5) * gridWidth).attr('data-y', 5*gridHeight);
-  });
-  repaint();
-});
-$('#save').on('click', function(e) {
-   e.preventDefault();
-   console.log('repaint the village');
-   repaint();
-});
-
-// when a pasture is selected, check the adjacent resources
-function pastureasource() {
-   // unit encounter?
-   $('#selected a').remove();
-   var tile = $(this).parent();
-   var x = tile.attr('data-x');
-   var y = tile.attr('data-y');
-   var adjacent = {pasture:1,wood:0,iron:0,stone:0,tar:0,hemp:0,undefined:0};
-   // go around the clock
-   y = y - 1.5;
-   x = x - 1;  // a + is interpretted as concat
-   // starting with - sets this as num instead of string
-   adjacent[ spotcheck( x, y) ]++;
-   x = x + 2;
-   adjacent[ spotcheck( x, y) ]++;
-   y = y +1.5;
-   x = x + 1;
-   adjacent[ spotcheck( x, y) ]++;
-   y = y +1.5;
-   x = x - 1;
-   adjacent[ spotcheck( x, y) ]++;
-   x = x - 2;
-   adjacent[ spotcheck( x, y) ]++;
-   y = y - 1.5;
-   x = x - 1;
-   adjacent[ spotcheck( x, y) ]++;
-      
-   for (var key in adjacent) {
-      if(adjacent[key] > 0) {
-       $('#selected').append("<a class='"+ key +"'>&#x2B22;<span class='count'>" + adjacent[key] +"</span></a>");
-      } 
-   }
-   unitlist(adjacent);
-};
+function synergize(one, two, three) {
+   // body...
+}
 
 // convert data-x to pixel offsets and place everything
 function repaint(){
@@ -185,6 +105,42 @@ function spotcheck( x, y) {
    var found = hit.find('div').attr('class');
    console.log('spotcheck '+ x+','+y+' is '+ found);
    return found;
+};
+
+
+// when a pasture is selected, check the adjacent resources
+function pastureasource() {
+   // unit encounter?
+   $('#selected a').remove();
+   var tile = $(this).parent();
+   var x = tile.attr('data-x');
+   var y = tile.attr('data-y');
+   var adjacent = {pasture:1,wood:0,iron:0,stone:0,tar:0,hemp:0,undefined:0};
+   // go around the clock
+   y = y - 1.5;
+   x = x - 1;  // a + is interpretted as concat
+   // starting with - sets this as num instead of string
+   adjacent[ spotcheck( x, y) ]++;
+   x = x + 2;
+   adjacent[ spotcheck( x, y) ]++;
+   y = y +1.5;
+   x = x + 1;
+   adjacent[ spotcheck( x, y) ]++;
+   y = y +1.5;
+   x = x - 1;
+   adjacent[ spotcheck( x, y) ]++;
+   x = x - 2;
+   adjacent[ spotcheck( x, y) ]++;
+   y = y - 1.5;
+   x = x - 1;
+   adjacent[ spotcheck( x, y) ]++;
+      
+   for (var key in adjacent) {
+      if(adjacent[key] > 0) {
+       $('#selected').append("<a class='"+ key +"'>&#x2B22;<span class='count'>" + adjacent[key] +"</span></a>");
+      } 
+   }
+   unitlist(adjacent);
 };
 
 function annex(type, x, y) {
