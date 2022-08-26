@@ -54,6 +54,16 @@ $('#save').on('click', function(e) {
 
 $('#spawn').on('click', function(e){
    e.preventDefault();
+   // The empty() method removes all child nodes and content from the selected elements.
+   $('#spawns').empty();
+   var sites = [];
    console.log('make the units');
+   $('.hex').each(function( index ) {
+      var options = findTriplets($(this));
+      $(options).each(function(index) {
+         //console.log($(this));
+         synergize($(this)[0],$(this)[1],$(this)[2],);
+      });
+   });
 
 });

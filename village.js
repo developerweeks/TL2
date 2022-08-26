@@ -98,9 +98,9 @@ function snappy( event, ui ) {
 
 function spotcheck( x, y) {
    var hit = $(".hex[data-x='"+ x+"'][data-y='"+ y+"']");
-   var found = hit.find('div').attr('class');
-   console.log('spotcheck '+ x+','+y+' is '+ found);
-   return found;
+   var found = hit.attr('data-type');
+   //console.log('spotcheck '+ x+','+y+' is '+ found);
+   return hit.attr('data-type');
 };
 
 

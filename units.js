@@ -11,17 +11,32 @@ var spawns = $('#spawns');
 
 // utility functions
 
-function synergize(one,two, three) {
+function synergize(one, two, three) {
 	// find the three types
+  var unitType = concoct([one.attr('data-type'), two.attr('data-type'), three.attr('data-type')]);
 
-	// find the three x, and pick the middle
-
-	// find the three y, and pick the middle
-
-	// Add the unit.
+	// find the three x, and pick the middle, and adjust.
+  var xs  = $([one.offset().left, two.offset().left, three.offset().left]).sort();
+  var siteX = (xs[2] - xs[1]) / 2 + xs[1];
+	// find the three y, and pick the biggest because it is top corner of underneath.
+  var ys = $([one.offset().top, two.offset().top, three.offset().top]).sort();
+  // I need to standardize size of unit, and adjust offset by half of its height.
+  var siteY = (ys[2] - ys[1]) / 2 + ys[1] - 30;
+  // New offsets need half of image's height and width removed from them.
+  // Add the unit.
+  addUnit(unitType, {'x':siteX,'y':siteY});
 }
 
-function addUnit(type = 1, home = {x:0.5, y:0.5}) {
+
+function placeUnit(ox, oy) {
+  // Unit will get decimal for their location?  Convert to offset.
+  var oddRow = (oy % 2 == 1) ? 0 : 0.5;
+  var ny = 1 * oy * gridHeight * 0.77;
+  var nx = 1 * gridWidth * ox + 1 * gridWidth * oddRow;
+  return {x:nx,y:ny};
+}
+
+function addUnit(type = 1, home = {'x':0.5, 'y':0.5}) {
   target = document.createElement("img");
   target.id = generateUUID();
   console.log(target.id);
@@ -29,7 +44,7 @@ function addUnit(type = 1, home = {x:0.5, y:0.5}) {
   target.className += 'unit-type-'+ type;
   target.src = guyImgs[ type ];
   spawns.append(target);
-  $('#'+ target.id).offset({top:0.77 * gridHeight * home.y, left:1 * gridWidth * home.x});
+  $('#'+ target.id).offset({top: home.y, left: home.x});
 }
 
 function generateUUID() { // Public Domain/MIT
@@ -44,7 +59,72 @@ function generateUUID() { // Public Domain/MIT
   });
 }
 
+function concoct(mix) {
+  $(mix).sort();
+  console.log(mix);
+  // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
+  return 1;
+}
 
+function findTriplets(center) {
+  var trips = [];
+  var dx = parseInt(center.attr('data-x'));
+  var dy = parseInt(center.attr('data-y'));
+  // We can look at this by data-coordinates.
+  // Assuming we are looking at 1-2, neighbors are 1-1, 2-1, 0-2, 2-2, 1-3, 2-3
+  // Assuming we are looking at 1-3, odd row, neighbors are 0-2, 1-2, 0-3, 2-3, 0-4, 1-4
+  var oddRow = parseInt(dy % 2 );
+  var points = {'UL':0, 'UR':0, 'R':0, 'LR':0, 'LL':0, 'L':0}
+  // We want triplets only, go around the clock.
+  if( spotcheck( 0 + dx - oddRow, dy - 1)) {
+    // Upper Left
+    points.UL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");;
+  }
+  if( spotcheck( 1 + dx - oddRow, dy - 1)) {
+    // Upper Right
+    points.UR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");;
+  }
+  if(points.UL.length && points.UR.length) {
+    trips.push([center, points.UL, points.UR].sort());
+  }
+
+  if( spotcheck(1 + dx, dy)) {
+    // Right.
+    points.R = $(".hex[data-x='"+ (1 + dx) +"'][data-y='"+ dy +"']");;
+  }
+  if(points.UR.length && points.R.length) {
+    trips.push([center, points.UR, points.R].sort());
+  }
+
+  if( spotcheck( 1 + dx - oddRow, 1 + dy)) {
+    // Lower Right
+    points.LR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");;
+  }
+  if(points.R.length && points.LR.length) {
+    trips.push([center, points.R, points.LR].sort());
+  }
+
+  if( spotcheck( 0 + dx - oddRow, 1 + dy)) {
+    // Lower Left
+    points.LL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");;
+  }
+  if(points.LR.length && points.LL.length) {
+    trips.push([center, points.LR, points.LL].sort());
+  }
+
+  if( spotcheck(0 + dx - 1, dy)) {
+    // Left.
+    points.L = $(".hex[data-x='"+ (0 + dx - 1) +"'][data-y='"+ dy +"']");;
+  }
+  if(points.LL.length && points.L.length) {
+    trips.push([center, points.LL, points.L].sort());
+  }
+  if(points.L.length && points.UL.length) {
+    trips.push([center, points.L, points.UL].sort());
+  }
+
+  return trips;
+};
 
 // listeners
 

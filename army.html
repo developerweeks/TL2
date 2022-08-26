@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Village local attempt</title>
+    &#x2720
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link type="text/css" rel="stylesheet" href='village.css' media="all" />
+    <script>
+      window.console = window.console || function(t) {};
+  </script>
+  <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+    }
+</script>
+</head>
+<body translate="no">
+    <div id="legend">
+        <a class="pasture">&#x2B23;<span class="count"></span></a>
+        <a class="wood">&#x2B23;<span class="count"></span></a>
+        <a class="iron">&#x2B23;<span class="count"></span></a>
+        <a class="stone">&#x2B23;<span class="count"></span></a>
+        <a class="tar">&#x2B23;<span class="count"></span></a>
+        <a class="hemp">&#x2B23;<span class="count"></span></a>
+    </div>
+    <div id="controls">
+        <a href="#" id="reset">&#x1d11d;</a>
+        <a href="#" id="sort">&#x2B17;</a>
+        <a href="#" id="save">&#x2B13;</a>
+        <a href="#" id="spawn">&#x2230;</a>
+    </div>
+    <div id="encounter">
+        <div id="selected" class="menu"></div>
+    </div>
+    <div class="boundary">
+        <div id="map">
+            <div class="hex iron" data-type="iron" data-x="0" data-y="1"></div>
+            <div class="hex stone" data-type="stone" data-x="1" data-y="1"></div>
+            <div class="hex pasture" data-type="pasture" data-x="3" data-y="1"></div>
+            <div class="hex wood" data-type="wood" data-x="2" data-y="2"></div>
+            <div class="hex iron" data-type="iron" data-x="0" data-y="2"></div>
+            <div class="hex tar" data-type="tar" data-x="1" data-y="2"></div>
+            <div class="hex hemp" data-type="hemp" data-x="2" data-y="3"></div>
+            <div class="hex wood" data-type="wood" data-x="0" data-y="3"></div>
+            <div class="hex pasture" data-type="pasture" data-x="2" data-y="4"></div>
+        </div>
+    </div>
+    <div class="boundary">
+        <div id="spawns"></div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="village.js"></script>
+    <script src="units.js"></script>
+    <script src="controls.js"></script>
+</body></html>
