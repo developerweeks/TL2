@@ -5,9 +5,7 @@ var size = {
 }
 var scale = (size.height + size.width)/40;
 var ratio = size.width / size.height; 
-var limit = Math.round(Math.sqrt($('.hex').length) / ratio);
-var emptyBuffX =  $('#map').offset().left+(size.width/9);
-var emptyBuffY = $('#map').offset().top +(size.height/9);
+var limit = Math.round(Math.sqrt($('.hex').length) * ratio);
 
 var gridWidth = 210,
 	gridHeight = 220;
@@ -26,9 +24,14 @@ var currentMousePos = { x: -1, y: -1 };
 
 console.log('scale ' + scale);
 console.log('ratio ' + ratio);
+console.log(limit + ' to a row');
 // Initialize village and menus
 conformity();
 
+
+/*
+ * Utility functions
+ */
 function scan(){
    // in case some things have changed, reset the globals
    size = {
@@ -37,33 +40,24 @@ function scan(){
   }
   scale = (size.height + size.width)/40;
   ratio = size.width / size.height; 
-  limit = Math.round(Math.sqrt($('.hex').length) / ratio); 
+  limit = Math.round(Math.sqrt($('.hex').length) * ratio); 
 }
 
-function recenter( event, ui ) {
-   // the whole map has moved, adjust paint padding
-   var rawX = $(this).offset().left;
-   var rawY = $(this).offset().top;
-   console.log($(this));
-   console.log(rawX +', '+ rawY);
-  emptyBuffX = emptyBuffX + rawX;
-  emptyBuffY = emptyBuffY + rawY;
-  $(this).offset({ top: 0, left: 0});
-  repaint();
-}
 
-// the button functions
+/*
+ * Interactive controls.
+ */
 $('#reset').on('click', function(e) {
    e.preventDefault();
-	console.log('Reset!');
    scan();
+   console.log('Reset!');
+   console.log(limit + ' to a row');
   // reset the village layout
   $('.hex').each(function( index ) {
-     step = index % limit;
-     x = Math.floor( index / limit ) * gridWidth;
-     y = step *3 + (x % 2 * 1.5);
-     $(this).attr('data-x', x);
-     $(this).attr('data-y', y);
+     var step = index % limit;
+     var row = Math.floor( index / limit );
+     $(this).attr('data-x', step);
+     $(this).attr('data-y', row);
   });
   repaint();
 });
