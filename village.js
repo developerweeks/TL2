@@ -5,9 +5,7 @@ var size = {
 }
 var scale = (size.height + size.width)/40;
 var ratio = size.width / size.height; 
-var limit = Math.round(Math.sqrt($('.hex').length) / ratio);
-var emptyBuffX =  $('#map').offset().left+(size.width/9);
-var emptyBuffY = $('#map').offset().top +(size.height/9);
+var limit = Math.round(Math.sqrt($('.hex').length) * ratio);
 
 var gridWidth = 210,
 	gridHeight = 220;
@@ -26,9 +24,14 @@ var currentMousePos = { x: -1, y: -1 };
 
 console.log('scale ' + scale);
 console.log('ratio ' + ratio);
+console.log(limit + ' to a row');
 // Initialize village and menus
 conformity();
 
+
+/*
+ * Utility functions
+ */
 function scan(){
    // in case some things have changed, reset the globals
    size = {
@@ -37,102 +40,9 @@ function scan(){
   }
   scale = (size.height + size.width)/40;
   ratio = size.width / size.height; 
-  limit = Math.round(Math.sqrt($('.hex').length) / ratio); 
+  limit = Math.round(Math.sqrt($('.hex').length) * ratio); 
 }
 
-function recenter( event, ui ) {
-   // the whole map has moved, adjust paint padding
-   var rawX = $(this).offset().left;
-   var rawY = $(this).offset().top;
-   console.log($(this));
-   console.log(rawX +', '+ rawY);
-  emptyBuffX = emptyBuffX + rawX;
-  emptyBuffY = emptyBuffY + rawY;
-  $(this).offset({ top: 0, left: 0});
-  repaint();
-}
-
-// the button functions
-$('#reset').on('click', function(e) {
-   e.preventDefault();
-	console.log('Reset!');
-   scan();
-  // reset the village layout
-  $('.hex').each(function( index ) {
-     step = index % limit;
-     x = Math.floor( index / limit ) * gridWidth;
-     y = step *3 + (x % 2 * 1.5);
-     $(this).attr('data-x', x);
-     $(this).attr('data-y', y);
-  });
-  repaint();
-});
-
-$('#sort').on('click', function(e) {
-   e.preventDefault();
-	console.log("sort!");
-  // reorder village layout
-  // one row per hex type 
-  $('.hex.pasture').each(function( index ) {
-     $(this).attr('data-x', index*gridWidth).attr('data-y', 0);
-  });
-  $('.hex.wood').each(function( index ) {
-     $(this).attr('data-x', (index + 0.5) * gridWidth).attr('data-y', gridHeight);
-  });
-  $('.hex.iron').each(function( index ) {
-     $(this).attr('data-x', index*gridWidth).attr('data-y', 2*gridHeight);
-  });
-  $('.hex.stone').each(function( index ) {
-     $(this).attr('data-x', (index + 0.5) * gridWidth).attr('data-y', 3*gridHeight);
-  });
-  $('.hex.tar').each(function( index ) {
-     $(this).attr('data-x', index*gridWidth).attr('data-y', 4*gridHeight);
-  });
-  $('.hex.hemp').each(function( index ) {
-     $(this).attr('data-x', (index + 0.5) * gridWidth).attr('data-y', 5*gridHeight);
-  });
-  repaint();
-});
-$('#save').on('click', function(e) {
-   e.preventDefault();
-   console.log('repaint the village');
-   repaint();
-});
-
-// when a pasture is selected, check the adjacent resources
-function pastureasource() {
-   // unit encounter?
-   $('#selected a').remove();
-   var tile = $(this).parent();
-   var x = tile.attr('data-x');
-   var y = tile.attr('data-y');
-   var adjacent = {pasture:1,wood:0,iron:0,stone:0,tar:0,hemp:0,undefined:0};
-   // go around the clock
-   y = y - 1.5;
-   x = x - 1;  // a + is interpretted as concat
-   // starting with - sets this as num instead of string
-   adjacent[ spotcheck( x, y) ]++;
-   x = x + 2;
-   adjacent[ spotcheck( x, y) ]++;
-   y = y +1.5;
-   x = x + 1;
-   adjacent[ spotcheck( x, y) ]++;
-   y = y +1.5;
-   x = x - 1;
-   adjacent[ spotcheck( x, y) ]++;
-   x = x - 2;
-   adjacent[ spotcheck( x, y) ]++;
-   y = y - 1.5;
-   x = x - 1;
-   adjacent[ spotcheck( x, y) ]++;
-      
-   for (var key in adjacent) {
-      if(adjacent[key] > 0) {
-       $('#selected').append("<a class='"+ key +"'>&#x2B22;<span class='count'>" + adjacent[key] +"</span></a>");
-      } 
-   }
-   unitlist(adjacent);
-};
 
 // convert data-x to pixel offsets and place everything
 function repaint(){
@@ -184,22 +94,59 @@ function snappy( event, ui ) {
    }
    // Merely a straightening is needed
    repaint();
+   // Snappy means move, means change in army.
+   conscript();
+   // Reminder: calling Conformity() here causes map to run 2^n times through repaint and conscript.
 };
 
 function spotcheck( x, y) {
    var hit = $(".hex[data-x='"+ x+"'][data-y='"+ y+"']");
-   var found = hit.find('div').attr('class');
-   console.log('spotcheck '+ x+','+y+' is '+ found);
-   return found;
+   var found = hit.attr('data-type');
+   //console.log('spotcheck '+ x+','+y+' is '+ found);
+   return hit.attr('data-type');
+};
+
+
+// when a pasture is selected, check the adjacent resources
+function pastureasource() {
+   // unit encounter?
+   $('#selected a').remove();
+   var tile = $(this).parent();
+   var x = tile.attr('data-x');
+   var y = tile.attr('data-y');
+   var adjacent = {pasture:1,wood:0,iron:0,stone:0,tar:0,hemp:0,undefined:0};
+   // go around the clock
+   y = y - 1.5;
+   x = x - 1;  // a + is interpretted as concat
+   // starting with - sets this as num instead of string
+   adjacent[ spotcheck( x, y) ]++;
+   x = x + 2;
+   adjacent[ spotcheck( x, y) ]++;
+   y = y +1.5;
+   x = x + 1;
+   adjacent[ spotcheck( x, y) ]++;
+   y = y +1.5;
+   x = x - 1;
+   adjacent[ spotcheck( x, y) ]++;
+   x = x - 2;
+   adjacent[ spotcheck( x, y) ]++;
+   y = y - 1.5;
+   x = x - 1;
+   adjacent[ spotcheck( x, y) ]++;
+      
+   for (var key in adjacent) {
+      if(adjacent[key] > 0) {
+       $('#selected').append("<a class='"+ key +"'>&#x2B22;<span class='count'>" + adjacent[key] +"</span></a>");
+      } 
+   }
+   unitlist(adjacent);
 };
 
 function annex(type, x, y) {
   // Append a DOM element object
-  var newFill = document.createElement( 'div' );
-  $(newFill).addClass(type);
-  var newHex = document.createElement( 'a' );
+  var newHex = document.createElement( 'div' );
   $(newHex).addClass('hex').attr('data-x', x).attr('data-y', y);
-  $(newHex).append( newFill );
+  $(newHex).addClass(type).attr('data-type', type);
   $('#map').append( newHex );
    
    conformity();
@@ -210,6 +157,7 @@ function conformity(){
   scan(); 
   repaint();
   census();
+  conscript();
   $('.hex').draggable({ addClasses: false });
   $('.hex').on( "dragstop", snappy);
   $('.pasture').on('click', pastureasource);
@@ -275,26 +223,4 @@ function animateUnits() {
 
 // .onfinish = function() {
 //		setTimeout(animateUnits, Math.floor(2000))
-
-function addUnit(type = 1, home = 0) {
-  target = document.createElement("img");
-  target.id = generateUUID();
-  console.log(target.id);
-  target.className += 'target ';
-  target.className += 'unit-type-'+ type;
-  target.src = "http://files.softicons.com/download/tv-movie-icons/homestar-runner-icons-by-rich-d/png/128/Pom-Pom.png";
-  container.appendChild(target);
-}
-
-function generateUUID() { // Public Domain/MIT
-  var d = new Date().getTime();
-  if (typeof performance !== 'undefined' && typeof performance.now === 'function'){
-    d += performance.now(); //use high-precision timer if available
-  }
-  return 'unit-xxyxxyxx'.replace(/[xy]/g, function (c) {
-    var r = (d + Math.random() * 16) % 16 | 0;
-    d = Math.floor(d / 16);
-    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-  });
-}
 
