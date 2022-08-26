@@ -72,7 +72,10 @@ function generateUUID() { // Public Domain/MIT
 // Look at our tile triplet, and see what it makes.
 function concoct(mix) {
   $(mix).sort();
-  console.log(mix);
+  // This sort does nothing?  I see both of these.
+  // ["iron","stone","iron"]
+  // ["stone","iron","iron"]
+  //console.log(mix);
   // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
   // A total of 56 possible combinations
   // Returned type number controls the image used, etc.
@@ -81,17 +84,16 @@ function concoct(mix) {
 
 // Call up the whole army.
 function conscript() {
+  console.log('~~~~ Conscriptint! ~~~~~')
   // The empty() method removes all child nodes and content from the selected elements.
   $('#spawns').empty();
   // Clear our dupe filter too.
   army = {};
   // It would be more efficient 
-  var sites = [];
   console.log('make the units');
   $('.hex').each(function( index ) {
     var options = findTriplets($(this));
     $(options).each(function(index) {
-      //console.log($(this));
       synergize($(this)[0],$(this)[1],$(this)[2],);
     });
   });

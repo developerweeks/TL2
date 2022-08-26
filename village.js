@@ -94,6 +94,9 @@ function snappy( event, ui ) {
    }
    // Merely a straightening is needed
    repaint();
+   // Snappy means move, means change in army.
+   conscript();
+   // Reminder: calling Conformity() here causes map to run 2^n times through repaint and conscript.
 };
 
 function spotcheck( x, y) {
@@ -143,7 +146,7 @@ function annex(type, x, y) {
   // Append a DOM element object
   var newHex = document.createElement( 'div' );
   $(newHex).addClass('hex').attr('data-x', x).attr('data-y', y);
-  $(newHex).addClass(type);
+  $(newHex).addClass(type).attr('data-type', type);
   $('#map').append( newHex );
    
    conformity();
@@ -154,6 +157,7 @@ function conformity(){
   scan(); 
   repaint();
   census();
+  conscript();
   $('.hex').draggable({ addClasses: false });
   $('.hex').on( "dragstop", snappy);
   $('.pasture').on('click', pastureasource);
