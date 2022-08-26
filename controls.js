@@ -56,6 +56,7 @@ $('#spawn').on('click', function(e){
    e.preventDefault();
    // The empty() method removes all child nodes and content from the selected elements.
    $('#spawns').empty();
+   army = {};
    var sites = [];
    console.log('make the units');
    $('.hex').each(function( index ) {

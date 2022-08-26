@@ -8,6 +8,7 @@ var guyImgs = {
 };
 
 var spawns = $('#spawns');
+var army = {};
 
 // utility functions
 
@@ -23,6 +24,13 @@ function synergize(one, two, three) {
   // I need to standardize size of unit, and adjust offset by half of its height.
   var siteY = (ys[2] - ys[1]) / 2 + ys[1] - 30;
   // New offsets need half of image's height and width removed from them.
+  // Check if this location is already populated.  (Else we get 3 units per triplet).
+  var key = Math.round(10 * siteX / gridWidth) +'-'+ Math.round(10 * siteY / gridHeight);
+  if( army.hasOwnProperty(key) ) {
+    // There is already a unit here.  Bail.
+    return;
+  }
+  army[key] = unitType;
   // Add the unit.
   addUnit(unitType, {'x':siteX,'y':siteY});
 }
@@ -59,10 +67,13 @@ function generateUUID() { // Public Domain/MIT
   });
 }
 
+// Look at our tile triplet, and see what it makes.
 function concoct(mix) {
   $(mix).sort();
   console.log(mix);
   // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
+  // A total of 56 possible combinations
+  // Returned type number controls the image used, etc.
   return 1;
 }
 
