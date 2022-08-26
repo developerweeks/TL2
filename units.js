@@ -3,8 +3,9 @@
  */
 var guyImgs = {
 	1: './img/KnifeGuy.gif',
-	2: './img/Clubber.gif',
-	3: './img/Pom-Pom.png'
+	2: './img/golden_knight.gif',
+	3: './img/Pom-Pom.png',
+  4: './img/combat_dummy.gif'
 };
 
 // https://opengameart.org/content/mr-knife-guy-animated
