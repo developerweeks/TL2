@@ -56,10 +56,14 @@ function addUnit(type = 1, home = {'x':0.5, 'y':0.5}) {
   console.log(target.id);
   target.className += 'unit ';
   target.className += 'unit-type-'+ type;
-  // Really make sure we stick to this pattern.
   target.src = guyImgs[ type ];
   spawns.append(target);
   $('#'+ target.id).offset({top: home.y, left: home.x});
+  // Really make sure we stick to this pattern.
+  $('#'+ target.id).attr('unit-type', type % 3);
+  // unit-type 1 is Fast, best against magic
+  // unit-type 2 is Magic, best against hard
+  // unit-type 0 is Hard, best against fast
 }
 
 function generateUUID() { // Public Domain/MIT

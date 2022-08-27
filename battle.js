@@ -19,7 +19,6 @@ function FIGHT() {
     setInterval(function() {
 	    // This code is executed every 200 milliseconds:
 	    $('#defenders img').each(function( index ) {
-	    	
 	    	var opponent = $('#invaders .unit')[Math.floor(Math.random()*invads.length)];
 	    	var next = steppit($(opponent).offset().left, $(opponent).offset().top, $(this).offset().left, $(this).offset().top);
             $(this).offset({top: next.y, left: next.x});
@@ -37,6 +36,18 @@ function FIGHT() {
 	    });
 	    // So now, we do damage.
 	    // Three generic types: fast -> magic -> hard -> fast
+	    $('#defenders img').each(function( index ) {
+	    	// Find the closest invader.
+	    	// Calculate damage against them.
+	    	// Determin if defeated them.
+	    	// Undate DOM.
+	    });
+	    $('#invaders img').each(function( index ) {
+	    	// Find the closest invader.
+	    	// Calculate damage against them.
+	    	// Determin if defeated them.
+	    	// Undate DOM.
+	    });
 
     }, 200);
 }
