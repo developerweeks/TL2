@@ -54,8 +54,9 @@ function addUnit(type = 1, home = {'x':0.5, 'y':0.5}) {
   target = document.createElement("img");
   target.id = generateUUID();
   console.log(target.id);
-  target.className += 'target unit ';
+  target.className += 'unit ';
   target.className += 'unit-type-'+ type;
+  // Really make sure we stick to this pattern.
   target.src = guyImgs[ type ];
   spawns.append(target);
   $('#'+ target.id).offset({top: home.y, left: home.x});
@@ -136,11 +137,11 @@ function findTriplets(center) {
   // We want triplets only, go around the clock.
   if( spotcheck( 0 + dx - oddRow, dy - 1)) {
     // Upper Left
-    points.UL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");;
+    points.UL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");
   }
   if( spotcheck( 1 + dx - oddRow, dy - 1)) {
     // Upper Right
-    points.UR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");;
+    points.UR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");
   }
   if(points.UL.length && points.UR.length) {
     trips.push([center, points.UL, points.UR].sort());
@@ -148,7 +149,7 @@ function findTriplets(center) {
 
   if( spotcheck(1 + dx, dy)) {
     // Right.
-    points.R = $(".hex[data-x='"+ (1 + dx) +"'][data-y='"+ dy +"']");;
+    points.R = $(".hex[data-x='"+ (1 + dx) +"'][data-y='"+ dy +"']");
   }
   if(points.UR.length && points.R.length) {
     trips.push([center, points.UR, points.R].sort());
@@ -156,7 +157,7 @@ function findTriplets(center) {
 
   if( spotcheck( 1 + dx - oddRow, 1 + dy)) {
     // Lower Right
-    points.LR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");;
+    points.LR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");
   }
   if(points.R.length && points.LR.length) {
     trips.push([center, points.R, points.LR].sort());
@@ -164,7 +165,7 @@ function findTriplets(center) {
 
   if( spotcheck( 0 + dx - oddRow, 1 + dy)) {
     // Lower Left
-    points.LL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");;
+    points.LL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");
   }
   if(points.LR.length && points.LL.length) {
     trips.push([center, points.LR, points.LL].sort());
@@ -172,7 +173,7 @@ function findTriplets(center) {
 
   if( spotcheck(0 + dx - 1, dy)) {
     // Left.
-    points.L = $(".hex[data-x='"+ (0 + dx - 1) +"'][data-y='"+ dy +"']");;
+    points.L = $(".hex[data-x='"+ (0 + dx - 1) +"'][data-y='"+ dy +"']");
   }
   if(points.LL.length && points.L.length) {
     trips.push([center, points.LL, points.L].sort());
