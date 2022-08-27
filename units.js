@@ -2,9 +2,11 @@
  * Set some globals
  */
 var guyImgs = {
-	1: './img/KnifeGuy.gif',
-	2: './img/Clubber.gif',
-	3: './img/Pom-Pom.png'
+	1: './img/KnifeGuy.gif', // 2 pasture 1 iron
+	2: './img/KnightAttackBig.gif', // 2 iron 1 stone
+	3: './img/SkellyA.gif', // 2 stone 1 hemp
+  4: './img/SkellyB.gif', // 2 stone 1 pasture
+  5: './img/sorlostand.gif', // 1 tar 1 stone 1 hemp
 };
 
 // https://opengameart.org/content/mr-knife-guy-animated
@@ -73,11 +75,32 @@ function generateUUID() { // Public Domain/MIT
 
 // Look at our tile triplet, and see what it makes.
 function concoct(mix) {
-  $(mix).sort();
+  //$(mix).sort();
   // This sort does nothing?  I see both of these.
   // ["iron","stone","iron"]
   // ["stone","iron","iron"]
-  //console.log(mix);
+  var counts = {};
+
+  $.each(mix, function(key,value) {
+    if (!counts.hasOwnProperty(value)) {
+      counts[value] = 1;
+    } else {
+      counts[value]++;
+    }
+  });
+  if( counts['iron'] == 2 && counts['stone'] == 1){
+    return 2;
+  }
+  if( counts['stone'] == 2 && counts['hemp'] == 1){
+    return 3;
+  }
+  if( counts['stone'] == 2 && counts['pasture'] == 1){
+    return 4;
+  }
+  if( counts['tar'] == 1 && counts['stone'] == 1 && counts['hemp'] == 1){
+    return 5;
+  }
+
   // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
   // A total of 56 possible combinations
   // Returned type number controls the image used, etc.
