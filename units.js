@@ -50,20 +50,28 @@ function placeUnit(ox, oy) {
   return {x:nx,y:ny};
 }
 
-function addUnit(type = 1, home = {'x':0.5, 'y':0.5}) {
+// Three generic types: fast -> magic -> hard -> fast
+// Oh! Units are a combination of their resources, so when calculating damage that is something like h2f1m0 vs h0f2m1
+// Stone/Iron = hard
+// Wood/Pasture = fast
+// Tar/Hemp = magic
+// So, a golem (3stone) vs a wizard (h1m2f0) would do 2 damage (1 + 2/2) and receive 5 damage (1+2*2)
+// But a golem against a ranger (3wood) would do 6 damange (3*2) and receive 1.5 damage (3/2)
+
+function addUnit(skin = 1, home = {'x':0.5, 'y':0.5}, stats = 'h1f1m1l10') {
   target = document.createElement("img");
   target.id = generateUUID();
   console.log(target.id);
   target.className += 'unit ';
-  target.className += 'unit-type-'+ type;
-  target.src = guyImgs[ type ];
+  target.className += 'unit-type-'+ skin;
+  target.src = guyImgs[ skin ];
   spawns.append(target);
   $('#'+ target.id).offset({top: home.y, left: home.x});
   // Really make sure we stick to this pattern.
-  $('#'+ target.id).attr('unit-type', type % 3);
-  // unit-type 1 is Fast, best against magic
-  // unit-type 2 is Magic, best against hard
-  // unit-type 0 is Hard, best against fast
+  $('#'+ target.id).attr('unit-type', skin);
+  $('#'+ target.id).attr('stats', stats);
+  // To make hacking harder, need to have the skin=>type-mix relation hid.
+  // If I just put a h1f1m1 on units, some one can change that to h9f9m9 and beat everything.
 }
 
 function generateUUID() { // Public Domain/MIT
@@ -85,7 +93,7 @@ function concoct(mix) {
   // ["iron","stone","iron"]
   // ["stone","iron","iron"]
   var counts = {};
-
+  // Right then, let's count dupes.
   $.each(mix, function(key,value) {
     if (!counts.hasOwnProperty(value)) {
       counts[value] = 1;
