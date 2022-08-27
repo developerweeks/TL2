@@ -6,7 +6,7 @@ var guyImgs = {
 	2: './img/KnightAttackBig.gif', // 2 iron 1 stone
 	3: './img/SkellyA.gif', // 2 stone 1 hemp
   4: './img/SkellyB.gif', // 2 stone 1 pasture
-  5: './img/sorlostand.gif', // 1 tar 1 stone 1 hemp
+  5: './img/wizard.gif', // 1 tar 1 stone 1 hemp
 };
 
 // https://opengameart.org/content/mr-knife-guy-animated
