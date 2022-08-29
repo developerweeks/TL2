@@ -10,6 +10,7 @@ var guyImgs = {
   6: './img/combat_dummy.gif'
 };
 
+
 // https://opengameart.org/content/mr-knife-guy-animated
 // https://codepen.io/punkydrewster713/pen/YooJJj
 // https://codepen.io/camkida/details/LjvjwR
