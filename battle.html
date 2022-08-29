@@ -1,0 +1,46 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invasion Test</title>
+    <link type="text/css" rel="stylesheet" href='battle.css' media="all" />
+    <script>
+      window.console = window.console || function(t) {};
+  </script>
+  <script>
+      if (document.location.search.match(/type=embed/gi)) {
+        window.parent.postMessage("resize", "*");
+    }
+</script>
+</head>
+<body translate="no">
+    <div id='indicators'>
+        <div id="team1"></div>
+        <div id="team2"></div>
+    </div>
+    <div id="invaders">
+        <img id="unit-de8f0bdf" class="unit unit-type-2" stats='h1f1m1l10' src="./img/KnightAttackBig.gif" style="top: 184.094px; left: 58.75px;">
+        <img id="unit-58a0db80" class="unit unit-type-4" stats='h1f1m1l10' src="./img/SkellyB.gif" style="top: 184.094px; left: 163.75px;">
+        <img id="unit-378c08a4" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 268.797px; left: 111.25px;">
+        <img id="unit-b2a2aa1f" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 184.094px; left: 268.75px;">
+        <img id="unit-11b1a8f7" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 268.797px; left: 216.25px;">
+        <img id="unit-0d889a6b" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 353.492px; left: 111.25px;">
+        <img id="unit-6694e93c" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 353.492px; left: 216.25px;">
+        <img id="unit-fa81ab28" class="unit unit-type-5" stats='h1f1m1l10' src="./img/wizard.gif" style="top: 438.188px; left: 163.75px;">
+    </div>
+    <div id="defenders">
+        <img id="unit-b2a2aa1f" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 300px; left: 550px;">
+        <img id="unit-11b1a8f7" class="unit unit-type-1" stats='h1f1m1l10' src="./img/KnifeGuy.gif" style="top: 400px; left: 550px;">
+    </div>
+    <div class="boundary">
+        <div id="map">
+        <div class="hex pasture" data-type="pasture" data-x="3" data-y="1"></div>
+        <div class="hex pasture" data-type="pasture" data-x="3" data-y="2"></div>
+        <div class="hex pasture" data-type="pasture" data-x="3" data-y="3"></div>
+    </div>
+    </div>
+    <!-- now the gears to make it work -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="battle.js"></script>
+    <script src="village.js"></script>
+</body>

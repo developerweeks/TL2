@@ -1,0 +1,66 @@
+body {
+  background-color:black;
+  font-family: Signika Negative, Asap, sans-serif;
+}
+
+
+.unit {
+  position: absolute
+}
+
+#defenders .unit {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+
+#map {
+  overflow:visible; 
+  padding:0; 
+  position: relative;
+  top: 0px;
+  left: 0px;
+}
+
+.hex:before {
+  content: " ";
+  width: 0; 
+  height: 0;
+  border-bottom: 50px solid #272727;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  position: absolute;
+  top: -50px;
+  left: 0;
+}
+
+.hex {
+  margin-top: 0px;
+  width: 200px;
+  background-color: #272727;
+  position: absolute;
+  text-align: center;
+  vertical-align:middle;
+  color: white;
+  white-space: normal;
+  overflow: visible;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: .7;
+}
+
+.hex:after {
+  content: "";
+  width: 0; 
+  position: absolute;
+  bottom: -50px;
+  left: 0px;
+  border-top: 50px solid #272727;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+}
+
+.hex.pasture {  background-color: #92b559;}
+.hex.pasture:before {  border-bottom: 50px solid #92b559;}
+.hex.pasture:after {  border-top: 50px solid #92b559;}

@@ -2,10 +2,12 @@
  * Set some globals
  */
 var guyImgs = {
-	1: './img/KnifeGuy.gif',
-	2: './img/golden_knight.gif',
-	3: './img/Pom-Pom.png',
-  4: './img/combat_dummy.gif'
+  1: './img/KnifeGuy.gif', // 2 pasture 1 iron
+  2: './img/KnightAttackBig.gif', // 2 iron 1 stone
+  3: './img/SkellyA.gif', // 2 stone 1 hemp
+  4: './img/SkellyB.gif', // 2 stone 1 pasture
+  5: './img/wizard.gif', // 1 tar 1 stone 1 hemp
+  6: './img/combat_dummy.gif'
 };
 
 // https://opengameart.org/content/mr-knife-guy-animated
@@ -49,15 +51,28 @@ function placeUnit(ox, oy) {
   return {x:nx,y:ny};
 }
 
-function addUnit(type = 1, home = {'x':0.5, 'y':0.5}) {
+// Three generic types: fast -> magic -> hard -> fast
+// Oh! Units are a combination of their resources, so when calculating damage that is something like h2f1m0 vs h0f2m1
+// Stone/Iron = hard
+// Wood/Pasture = fast
+// Tar/Hemp = magic
+// So, a golem (3stone) vs a wizard (h1m2f0) would do 2 damage (1 + 2/2) and receive 5 damage (1+2*2)
+// But a golem against a ranger (3wood) would do 6 damange (3*2) and receive 1.5 damage (3/2)
+
+function addUnit(skin = 1, home = {'x':0.5, 'y':0.5}, stats = 'h1f1m1l10') {
   target = document.createElement("img");
   target.id = generateUUID();
   console.log(target.id);
-  target.className += 'target unit ';
-  target.className += 'unit-type-'+ type;
-  target.src = guyImgs[ type ];
+  target.className += 'unit ';
+  target.className += 'unit-type-'+ skin;
+  target.src = guyImgs[ skin ];
   spawns.append(target);
   $('#'+ target.id).offset({top: home.y, left: home.x});
+  // Really make sure we stick to this pattern.
+  $('#'+ target.id).attr('unit-type', skin);
+  $('#'+ target.id).attr('stats', stats);
+  // To make hacking harder, need to have the skin=>type-mix relation hid.
+  // If I just put a h1f1m1 on units, some one can change that to h9f9m9 and beat everything.
 }
 
 function generateUUID() { // Public Domain/MIT
@@ -74,11 +89,12 @@ function generateUUID() { // Public Domain/MIT
 
 // Look at our tile triplet, and see what it makes.
 function concoct(mix) {
-  $(mix).sort();
+  //$(mix).sort();
   // This sort does nothing?  I see both of these.
   // ["iron","stone","iron"]
   // ["stone","iron","iron"]
   var counts = {};
+  // Right then, let's count dupes.
   $.each(mix, function(key,value) {
     if (!counts.hasOwnProperty(value)) {
       counts[value] = 1;
@@ -86,6 +102,19 @@ function concoct(mix) {
       counts[value]++;
     }
   });
+
+if( counts['iron'] == 2 && counts['stone'] == 1){
+    return 2;
+  }
+  if( counts['stone'] == 2 && counts['hemp'] == 1){
+    return 3;
+  }
+  if( counts['stone'] == 2 && counts['pasture'] == 1){
+    return 4;
+  }
+  if( counts['tar'] == 1 && counts['stone'] == 1 && counts['hemp'] == 1){
+    return 5;
+  }
 
   // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
   // A total of 56 possible combinations
@@ -122,11 +151,11 @@ function findTriplets(center) {
   // We want triplets only, go around the clock.
   if( spotcheck( 0 + dx - oddRow, dy - 1)) {
     // Upper Left
-    points.UL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");;
+    points.UL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");
   }
   if( spotcheck( 1 + dx - oddRow, dy - 1)) {
     // Upper Right
-    points.UR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");;
+    points.UR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ ( 0 + dy - 1)+"']");
   }
   if(points.UL.length && points.UR.length) {
     trips.push([center, points.UL, points.UR].sort());
@@ -134,7 +163,7 @@ function findTriplets(center) {
 
   if( spotcheck(1 + dx, dy)) {
     // Right.
-    points.R = $(".hex[data-x='"+ (1 + dx) +"'][data-y='"+ dy +"']");;
+    points.R = $(".hex[data-x='"+ (1 + dx) +"'][data-y='"+ dy +"']");
   }
   if(points.UR.length && points.R.length) {
     trips.push([center, points.UR, points.R].sort());
@@ -142,7 +171,7 @@ function findTriplets(center) {
 
   if( spotcheck( 1 + dx - oddRow, 1 + dy)) {
     // Lower Right
-    points.LR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");;
+    points.LR = $(".hex[data-x='"+ (1 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");
   }
   if(points.R.length && points.LR.length) {
     trips.push([center, points.R, points.LR].sort());
@@ -150,7 +179,7 @@ function findTriplets(center) {
 
   if( spotcheck( 0 + dx - oddRow, 1 + dy)) {
     // Lower Left
-    points.LL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");;
+    points.LL = $(".hex[data-x='"+ (0 + dx - oddRow) +"'][data-y='"+ (1+dy) +"']");
   }
   if(points.LR.length && points.LL.length) {
     trips.push([center, points.LR, points.LL].sort());
@@ -158,7 +187,7 @@ function findTriplets(center) {
 
   if( spotcheck(0 + dx - 1, dy)) {
     // Left.
-    points.L = $(".hex[data-x='"+ (0 + dx - 1) +"'][data-y='"+ dy +"']");;
+    points.L = $(".hex[data-x='"+ (0 + dx - 1) +"'][data-y='"+ dy +"']");
   }
   if(points.LL.length && points.L.length) {
     trips.push([center, points.LL, points.L].sort());
@@ -169,6 +198,7 @@ function findTriplets(center) {
 
   return trips;
 };
+
 
 // listeners
 
