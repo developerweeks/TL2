@@ -5,7 +5,10 @@ var invads = $('#invaders .unit'),
     speed = 20;
 // The vars invads and defens become invalid after some units are killed.
 
-
+// To look intoL
+// https://www.freecodecamp.org/news/learning-javascript-by-making-a-game-4aca51ad9030/
+// https://www.reddit.com/r/gamedev/
+//
 // Utility functions
 function conscript() {
     return;
@@ -54,11 +57,12 @@ function inflict(who, what) {
     // separate strength from life.
     console.log(details);
     details = details.split('l');
-    if( details[1] < what) {
+    var health = parseInt( details[1]);
+    if( health < what) {
         // It dead.
         $(who).remove();
     } else {
-        $(who).attr('stats', details[0] + 'l'+ (details[1] - what));
+        $(who).attr('stats', details[0] + 'l'+ (health - what));
     }
     console.log($(who).attr('stats'));
     // Damage done.
@@ -74,6 +78,8 @@ function FIGHT() {
             } else {
                 opponent = $('#invaders .unit')[0];
             }
+		// Should I have code that checks (this.offset + this.width) - that.offset to see who is close enough?
+		// 
             var next = steppit($(opponent).offset().left, $(opponent).offset().top, $(this).offset().left, $(this).offset().top);
             $(this).offset({top: next.y, left: next.x});
             // In order to do lookups
@@ -89,19 +95,12 @@ function FIGHT() {
             }
             var next = steppit($(opponent).offset().left, $(opponent).offset().top, $(this).offset().left, $(this).offset().top);
             $(this).offset({top: next.y, left: next.x});
-            // In order to do lookups
-            // $(".hex[data-x='"+ (0 + dx - 1) +"'][data-y='"+ dy +"']");;
-            // I need these units to have data attributes that I can query
         });
         // So now, we do damage.  Three generic types: fast -> magic -> hard -> fast
         // Oh! Units are a combination of their resources, so when calculating damage that is something like h2f1m0 vs h0f2m1
-        // Stone/Iron = hard
-        // Wood/Pasture = fast
-        // Tar/Hemp = magic
-        // So, a golem (3stone) vs a wizard (h1m2f0) would do 2 damage (1 + 2/2) and receive 5 damage (1+2*2)
-        // But a golem against a ranger (3wood) would do 6 damange (3*2) and receive 1.5 damage (3/2)
-        // ... What happens when a unit has h1f1m1?  Going against h1f1m1 is that 1x2+1x2+1x2=6?  Is that 1+1x2+1/2=3.5?
-        //  If I always seek advantage, that would mean I always compare this fast to that magic, and an everything unit would be best.
+        // Stone/Iron = hard      Wood/Pasture = fast         Tar/Hemp = magic
+        // Methods considered included the Risk strategy (highest v highest, what to do with h1f1m1?)
+	// Decided it was going to be the trio of advantage (f->m) minus the trio of defense (h<-m)
 
         var invads = $('#invaders .unit'); // Get a fresh copy
         var defens = $('#defenders .unit');
