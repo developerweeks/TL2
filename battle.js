@@ -52,6 +52,7 @@ function inflict(who, what) {
         console.log(who);
     }
     // separate strength from life.
+    console.log(details);
     details = details.split('l');
     if( details[1] < what) {
         // It dead.
@@ -59,6 +60,7 @@ function inflict(who, what) {
     } else {
         $(who).attr('stats', details[0] + 'l'+ (details[1] - what));
     }
+    console.log($(who).attr('stats'));
     // Damage done.
 }
 
