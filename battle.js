@@ -19,7 +19,6 @@ function calcDmg(unit1, unit2) {
   // advantage  =min(I4,M4)*3 + min(J4,N4)*3 + min(K4,L4)*3
   // defense  =min(N4*I4,1)+min(L4*J4,1)+min(M4*K4,1)
   // damage = max(advantage - defense, 0) ... +1 on pure elementals against self or perfect advantage
-  console.log(unit1 +' '+ typeof unit1 +' '+ $(dmgtble).hasOwnProperty(unit1));
   var dmgtble = {
     'h3f0m0': {'h3f0m0':1, 'h0f3m0':10, 'h0f0m3':0, 'h2f1m0':3, 'h2f0m1':1, 'h1f2m0':6, 'h0f2m1':5, 'h1f0m2':1, 'h0f1m2':2, 'h1f1m1':2}, // sum 34
     'h0f3m0': {'h3f0m0':0, 'h0f3m0':1, 'h0f0m3':10, 'h2f1m0':1, 'h2f0m1':2, 'h1f2m0':1, 'h0f2m1':3, 'h1f0m2':5, 'h0f1m2':6, 'h1f1m1':2}, // sum 34
@@ -34,8 +33,7 @@ function calcDmg(unit1, unit2) {
   };
   // magic -> hard -> fast -> magic... and 2magic-1hard gives more damage potential than 2hard-1magic
   // strong > weak gives you 34, weak > strong gives you 30
-  return dmgtble[unit1][unit2];
-  if( $(dmgtble).hasOwnProperty(unit1) && $(dmgtble[unit1]).hasOwnProperty(unit2) ) {
+  if( typeof dmgtble[unit1] == 'object' && typeof dmgtble[unit1][unit2] == 'number' ) {
     return dmgtble[unit1][unit2];
   }
   // So table[unit1][unit2] is undefined?  Something hinky going on.
