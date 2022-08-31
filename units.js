@@ -104,23 +104,155 @@ function concoct(mix) {
     }
   });
 
-if( counts['iron'] == 2 && counts['stone'] == 1){
-    return 2;
+  // Might reduce operation time with gates
+  if( counts['pasture'] > 1) {
+    if( counts['pasture'] == 3) {
+      // Triplet, elemental, fast type
+      return 1;
+    }
+    if( counts['pasture'] == 2) {
+      if( counts['wood']) { /* P2W1 = Fast 3 */ return 1;}
+      if( counts['stone']) { /* P2S1 = H1F2M0 */ return 1;}
+      if( counts['iron']) { /* P2I1 = H1F2M0 */ return 1;}
+      if( counts['tar']) { /* P2T1 = H0F2M1 */ return 1;}
+      if( counts['hemp']) { /* P2H1 = H0F2M1 */ return 1;}
+    }
+    return 1;
   }
-  if( counts['stone'] == 2 && counts['hemp'] == 1){
-    return 3;
+  if( counts['wood'] > 1) {
+    if( counts['wood'] == 3) {
+      // Triplet, elemental, fast type
+      return 1;
+    }
+    if( counts['wood'] == 2) {
+      if( counts['pasture']) { /* W2P1 = Fast 3 */ return 1;}
+      if( counts['stone']) { /* W2S1 = H1F2M0 */ return 1;}
+      if( counts['iron']) { /* W2I1 = H1F2M0 */ return 1;}
+      if( counts['tar']) { /* W2T1 = H0F2M1 */ return 1;}
+      if( counts['hemp']) { /* W2H1 = H0F2M1 */ return 1;}
+    }
+    return 1;
   }
-  if( counts['stone'] == 2 && counts['pasture'] == 1){
-    return 4;
+  if( counts['stone'] > 1) {
+    if( counts['stone'] == 3) {
+      // Triplet, elemental, hard type
+      return 1;
+    }
+    if( counts['stone'] == 2) {
+      if( counts['pasture']) { /* S2P1 = H2F1M0 */ return 4;}
+      if( counts['wood']) { /* S2W1 = H2F1M0 */ return 1;}
+      if( counts['iron']) { /* S2I1 = Hard 3 */ return 1;}
+      if( counts['tar']) { /* S2T1 = H2F0M1 */ return 1;}
+      if( counts['hemp']) { /* S2H1 = H2F0M1 */ return 3;}
+    }
+    return 1;
   }
-  if( counts['tar'] == 1 && counts['stone'] == 1 && counts['hemp'] == 1){
-    return 5;
+  if( counts['iron'] > 1) {
+    if( counts['iron'] == 3) {
+      // Triplet, elemental, hard type
+      return 2;
+    }
+    if( counts['iron'] == 2) {
+      if( counts['pasture']) { /* I2P1 = H2F1M0 */ return 4;}
+      if( counts['wood']) { /* I2W1 = H2F1M0 */ return 1;}
+      if( counts['stone']) { /* I2S1 = Hard 3 */ return 2;}
+      if( counts['tar']) { /* I2T1 = H2F0M1 */ return 1;}
+      if( counts['hemp']) { /* I2H1 = H2F0M1 */ return 3;}
+    }
+    return 1;
   }
-
-  // Go one by one, traversing our type tree, to find which kind of unit is made from this combination.
-  // A total of 56 possible combinations
-  // Returned type number controls the image used, etc.
-  return 1;
+  if( counts['tar'] > 1) {
+    if( counts['tar'] == 3) {
+      // Triplet, elemental, magic type
+      return 2;
+    }
+    if( counts['tar'] == 2) {
+      if( counts['pasture']) { /* T2P1 = H0F1M2 */ return 4;}
+      if( counts['wood']) { /* T2W1 = H0F1M2 */ return 1;}
+      if( counts['stone']) { /* T2S1 = H1F0M2 */ return 2;}
+      if( counts['iron']) { /* T2I1 = H1F0M2 */ return 1;}
+      if( counts['hemp']) { /* T2H1 = Magic 3 */ return 3;}
+    }
+    return 1;
+  }
+  if( counts['hemp'] > 1) {
+    if( counts['hemp'] == 3) {
+      // Triplet, elemental, magic type
+      return 2;
+    }
+    if( counts['hemp'] == 2) {
+      if( counts['pasture']) { /* H2P1 = H2F1M0 */ return 1;}
+      if( counts['wood']) { /* H2W1 = H2F1M0 */ return 1;}
+      if( counts['stone']) { /* H2S1 = Hard 3 */ return 1;}
+      if( counts['iron']) { /* H2T1 = H2F0M1 */ return 1;}
+      if( counts['tar']) { /* H2T1 = Magic 3 */ return 1;}
+    }
+    return 1;
+  }
+  // Now we only have the all-ones options.
+  // Elimination tree.
+  if( counts['pasture']) {
+    if( counts['wood']) {
+      if( counts['stone']) { /* P1W1S1 = H1F2M0 */ return 1;}
+      if( counts['iron']) { /* P1W1I1 = H1F2M0 */ return 1;}
+      if( counts['hemp']) { /* P1W1H1 = H0F2M1 */ return 1;}
+      if( counts['tar']) { /* P1W1T1 = H0F2M1 */ return 1;}
+    }
+    if( counts['stone']) {
+      if( counts['iron']) { /* P1S1I1 = H2F1M0 */ return 1;}
+      if( counts['hemp']) { /* P1S1H1 = H1F1M1 */ return 1;}
+      if( counts['tar']) { /* P1S1T1 = H1F1M1 */ return 1;}
+    }
+    if( counts['iron']) {
+      if( counts['hemp']) { /* P1I1H1 = H1F1M1 */ return 1;}
+      if( counts['tar']) { /* P1I1T1 = H1F1M1 */ return 1;}
+    }
+    if( counts['hemp'] && counts['tar']) {
+      /* P1H1T1 = H0F1M2 */
+      return 1;
+    } else {
+      // This should not happen.
+      return 0;
+    }
+  }
+  if( counts['wood']) {
+    if( counts['stone']) {
+      if( counts['iron']) { /* W1S1I1 = H2F1M0 */ return 1;}
+      if( counts['hemp']) { /* W1S1H1 = H1F1M1 */ return 1;}
+      if( counts['tar']) { /* W1S1T1 = H1F1M1 */ return 1;}
+    }
+    if( counts['iron']) {
+      if( counts['hemp']) { /* W1I1H1 = H1F1M1 */ return 1;}
+      if( counts['tar']) { /* W1I1T1 = H1F1M1 */ return 1;}
+    }
+    if( counts['hemp'] && counts['tar']) {
+      /* W1H1T1 = H0F1M2 */
+      return 1;
+    } else {
+      // This should not happen.
+      return 0;
+    }
+  }
+  if( counts['stone']) {
+    if( counts['iron']) {
+      if( counts['hemp']) { /* S1I1H1 = H2F0M1 */ return 1;}
+      if( counts['tar']) { /* S1I1T1 = H2F0M1 */ return 1;}
+    }
+    if( counts['hemp'] && counts['tar']) {
+      /* S1H1T1 = H1F0M2 */
+      return 5;
+    } else {
+      // This should not happen.
+      return 0;
+    }
+  }
+  if(counts['iron'] && counts['hemp'] && counts['tar']) {
+    /* I1H1T1 = H1F0M2 */
+    return 1;
+  }
+  // Something should have tripped by this point.
+  // A total of 56 possible combinations, Returned type number controls the image used, etc.
+  return 0;
 }
 
 // Call up the whole army.
